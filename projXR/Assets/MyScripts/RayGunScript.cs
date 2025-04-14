@@ -41,9 +41,18 @@ public class RayGunScript : MonoBehaviour
         if(hasHit)
         {
             endPoint = hit.point;
-            Quaternion rayImpactRotation = Quaternion.LookRotation(-hit.normal);
-            GameObject rayImpact = Instantiate(rayImpactPrefab, hit.point, rayImpactRotation);
-            Destroy(rayImpact, 1f);
+            GhostScript ghost = hit.transform.GetComponentInParent<GhostScript>();
+
+            if(ghost)
+            {
+                hit.collider.enabled = false;
+                ghost.Kill();
+            } else {
+                Quaternion rayImpactRotation = Quaternion.LookRotation(-hit.normal);
+                GameObject rayImpact = Instantiate(rayImpactPrefab, hit.point, rayImpactRotation);
+                Destroy(rayImpact, 1f); 
+            }
+
         }
         else
         {
